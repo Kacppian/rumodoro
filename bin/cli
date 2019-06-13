@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'commander/import'
+require_relative '../pomodoro'
+
+program :name, 'pm'
+program :version, '0.0.1'
+program :description, 'A cli-tool to manage your pomodoro cycles'
+
+command :start do |c|
+  c.syntax = 'pm start, [options]'
+  c.summary = ''
+  c.description = 'This starts your pomodoro cycle'
+  c.example 'description', 'command example'
+  c.option '--duration FLOAT', Float, 'How long should each cycle last'
+  c.option '--sound_path STRING', String, 'A path to music to alert when the cycle is finished'
+  c.action do |args, options|
+    # Do something or c.when_called Pm::Commands::Start 
+	  p = Pomodoro.new
+	  options.default :duration => 25, :sound_path => './notification.mp3'
+	  p.start options.duration, options.sound_path
+  end
+end
+
+command :configure do |c|
+  c.syntax = 'pm configure [options]'
+  c.summary = ''
+  c.description = ''
+  c.example 'description', 'command example'
+  c.option '--some-switch', 'Some switch that does something'
+  c.action do |args, options|
+    # Do something or c.when_called Pm::Commands::Configure
+  end
+end
+
