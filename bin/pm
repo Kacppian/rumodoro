@@ -2,11 +2,34 @@
 
 require 'rubygems'
 require 'commander/import'
-require_relative '../pomodoro'
+require_relative '../lib/pomodoro'
+require 'fileutils'
+require 'json'
 
 program :name, 'pm'
 program :version, '0.0.1'
 program :description, 'A cli-tool to manage your pomodoro cycles'
+
+$CONFIG = {}
+
+def init_config
+	config_file =  '/home/kaushikasp/.rumodoro/config.json'
+
+	if !File.directory? '/home/kaushikasp/.rumodoro'
+		FileUtils.mkdir_p('/home/kaushikasp/.rumodoro/')
+	end
+
+	if !File.exists? config_file
+		of = File.new(config_file, 'w')
+		config_data = { :history => [], :default_duration => 25, :default_sound_path => 'assets/notification.mp3' }
+		of.puts config_data.to_json
+		of.close
+	end
+	
+	$CONFIG = JSON.parse(File.read(config_file))
+end
+
+init_config
 
 command :start do |c|
   c.syntax = 'pm start, [options]'
@@ -15,10 +38,9 @@ command :start do |c|
   c.example 'description', 'command example'
   c.option '--duration FLOAT', Float, 'How long should each cycle last'
   c.option '--sound_path STRING', String, 'A path to music to alert when the cycle is finished'
-  c.action do |args, options|
-    # Do something or c.when_called Pm::Commands::Start 
+  c.action do |args, options| 
 	  p = Pomodoro.new
-	  options.default :duration => 25, :sound_path => './sound.mp3'
+	  options.default :duration => $CONFIG['default_duration'], :sound_path => $CONFIG['default_sound_path']
 	  p.start options.duration, options.sound_path
   end
 end
