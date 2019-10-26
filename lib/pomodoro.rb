@@ -10,10 +10,10 @@ class Pomodoro
 			@elapsed = (target_time - curr_time)
 
 		    	m = sprintf('%02i', ((@elapsed.to_i % 3600) / 60))
-    			s = sprintf('%02i', (@elapsed.to_i % 60))	
+    			s = sprintf('%02i', (@elapsed.to_i % 60))
 			print "Keep at it! - #{m} mins #{s} secs more to go" + "\r"
 			$stdout.flush
-			
+
 			sleep(1)
 			curr_time = Time.now
 		end
