@@ -13,20 +13,22 @@ program :description, 'A cli-tool to manage your pomodoro cycles'
 $CONFIG = {}
 
 def init_config
-	config_file =  '~/.rumodoro/config.json'
+  base_path = `echo $HOME`
+  base_path.rstrip!
+  config_file = base_path + '/.rumodoro/config.json'
 
-	if !File.directory? '~/.rumodoro'
-		FileUtils.mkdir_p('~/.rumodoro/')
-	end
+  if !File.directory? "#{base_path}/.rumodoro"
+    FileUtils.mkdir_p("#{base_path}/.rumodoro/")
+  end
 
-	if !File.exists? config_file
-		of = File.new(config_file, 'w')
-		config_data = { :history => [], :default_duration => 25, :default_sound_path => 'assets/notification.mp3' }
-		of.puts config_data.to_json
-		of.close
-	end
+  if !File.exists? config_file
+    of = File.new(config_file, 'w')
+    config_data = { :history => [], :default_duration => 25, :default_sound_path => 'assets/notification.mp3' }
+    of.puts config_data.to_json
+    of.close
+  end
 
-	$CONFIG = JSON.parse(File.read(config_file))
+  $CONFIG = JSON.parse(File.read(config_file))
 end
 
 init_config
