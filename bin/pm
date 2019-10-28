@@ -41,9 +41,9 @@ command :start do |c|
   c.option '--duration FLOAT', Float, 'How long should each cycle last'
   c.option '--sound_path STRING', String, 'A path to music to alert when the cycle is finished'
   c.action do |args, options|
-    p = Pomodoro.new
-    options.default :duration => $CONFIG['default_duration'], :sound_path => $CONFIG['default_sound_path']
-    p.start options.duration, options.sound_path
+	  p = Pomodoro.new
+	  options.default :duration => $CONFIG['default_duration'], :sound_path => $CONFIG['default_sound_path']
+	  p.start options.duration, options.sound_path
   end
 end
 
